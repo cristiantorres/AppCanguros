@@ -42,6 +42,11 @@ namespace Canguros.Model
                 _logger.LogError($"La posición del segundo canguro no es válida");
                 throw new ArgumentException($"La posición del segundo canguro no es válida", nameof(newCanguro));
             }
+            if (newCanguro.MetersPerJump > this.FirstCanguro?.MetersPerJump)
+            {
+                _logger.LogError($"el poder de salto del segundo canguro es mas potente que el del primer canguro");
+                throw new ArgumentException($"el poder de salto del segundo canguro es mas potente que el del primer canguro", nameof(newCanguro));
+            }
             SecondCanguro = newCanguro;
             return this;
         }
@@ -55,7 +60,7 @@ namespace Canguros.Model
                 return true;
             }
             else
-                if (FirstCanguro.CurrentPoint >= Linea.EndPoint || SecondCanguro.CurrentPoint >= Linea.EndPoint)
+                if ( FirstCanguro.CurrentPoint >= Linea.EndPoint || SecondCanguro.CurrentPoint >= Linea.EndPoint)
                     return false;
                 else
                     {
