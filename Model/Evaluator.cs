@@ -46,24 +46,23 @@ namespace Canguros.Model
             return this;
         }
 
-        public bool ExistsCoincidentPoint( Canguro canguro1, Canguro canguro2 )
+        public bool ExistsCoincidentPoint( int posicionCanguro1, int jumpPowerCanguro1, int posicionCanguro2, int jumpPowerCanguro2)
         {
-            if (canguro1.CurrentPoint == canguro2.CurrentPoint)
+            if (posicionCanguro1 == posicionCanguro2)
             {
-                _logger.LogInformation($"Se encontró un punto coincidente entre los 2 canguros: Punto[{canguro1.CurrentPoint}]");
-                Console.WriteLine($"Punto coincidente: {canguro1.CurrentPoint}");
+                _logger.LogInformation($"Se encontró un punto coincidente entre los 2 canguros: Punto[{FirstCanguro.CurrentPoint}]");
+                Console.WriteLine($"Punto coincidente: {FirstCanguro.CurrentPoint}");
                 return true;
             }
-
             else
-            if (canguro1.CurrentPoint >= Linea.EndPoint || canguro2.CurrentPoint >= Linea.EndPoint)
-                return false;
-            else
-                {
-                    canguro1.Jump();
-                    canguro2.Jump();
-                    return ExistsCoincidentPoint(canguro1, canguro2);
-                }
+                if (FirstCanguro.CurrentPoint >= Linea.EndPoint || SecondCanguro.CurrentPoint >= Linea.EndPoint)
+                    return false;
+                else
+                    {
+                        FirstCanguro.Jump(jumpPowerCanguro1);
+                        SecondCanguro.Jump(jumpPowerCanguro2);
+                        return ExistsCoincidentPoint(FirstCanguro.CurrentPoint, FirstCanguro.MetersPerJump,SecondCanguro.CurrentPoint, SecondCanguro.MetersPerJump);
+                    }
         }
     }
 }

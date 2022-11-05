@@ -12,9 +12,11 @@ namespace AppCangurosTest
     public class EvaluatorTest
     {
         private readonly ILine<int> _line;
+        private readonly ILogger<Evaluator> _loggerEvaluator;
 
         public EvaluatorTest()
         {
+             _loggerEvaluator = new Mock<ILogger<Evaluator>>().Object;
             _line = new LineaNumerica(0, 100);
         }
 
@@ -30,11 +32,11 @@ namespace AppCangurosTest
             var canguro2 = new CanguroFactory()
                                     .Create(locationCanguroTwo, powerCanguroTwo);
             /*Mock de Evaluator*/
-            var evaluator = new Mock<Evaluator>(_line).Object
+            var evaluator = new Mock<Evaluator>(_line, _loggerEvaluator).Object
                                     .WithCanguro(canguro1)
                                     .AndAnotherCanguro(canguro2); ;
 
-            bool existsPoint = evaluator.ExistsCoincidentPoint(canguro1, canguro2);
+            bool existsPoint = evaluator.ExistsCoincidentPoint(canguro1.CurrentPoint,canguro1.MetersPerJump,canguro2.CurrentPoint, canguro2.MetersPerJump);
             Assert.False(existsPoint);
         }
 
@@ -45,6 +47,7 @@ namespace AppCangurosTest
         public void Evaluation_Returns_True(int locationCanguro,int powerCanguro, int locationCanguroTwo, int powerCanguroTwo)
         {
             #region Arrange
+ 
             /*Instancia el primer canguro*/
             var canguro1 = new CanguroFactory()
                                     .Create(locationCanguro, powerCanguro);
@@ -52,13 +55,13 @@ namespace AppCangurosTest
             var canguro2 = new CanguroFactory()
                                     .Create(locationCanguroTwo, powerCanguroTwo);
             /*Mock de Evaluator*/
-            var evaluator = new Mock<Evaluator>(_line).Object
+            var evaluator = new Mock<Evaluator>(_line,_loggerEvaluator).Object
                                       .WithCanguro(canguro1)
                                       .AndAnotherCanguro(canguro2);
             #endregion
 
             #region Act
-            bool existsPoint = evaluator.ExistsCoincidentPoint(canguro1, canguro2);
+            bool existsPoint = evaluator.ExistsCoincidentPoint(canguro1.CurrentPoint, canguro1.MetersPerJump, canguro2.CurrentPoint, canguro2.MetersPerJump);
             #endregion
 
             #region Asserts
@@ -77,12 +80,13 @@ namespace AppCangurosTest
             /*Instancia el segundo canguro*/
             var canguro2 = new CanguroFactory()
                                     .Create(locationCanguroTwo, powerCanguroTwo);
+            var evaluator = new Mock<Evaluator>(_line,_loggerEvaluator).Object;
             #endregion
 
             #region Act
-            /*Mock de Evaluator*/
-            var evaluator = new Mock<Evaluator>(_line).Object
-                    .WithCanguro(canguro1);
+        /*Mock de Evaluator*/
+
+        evaluator.WithCanguro(canguro1);
             
             Action action = () => evaluator.AndAnotherCanguro( canguro2);
             #endregion

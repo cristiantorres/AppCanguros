@@ -49,7 +49,8 @@ var canguro2 = new CanguroFactory()
                         .Create(5, 2);
 evaluator.WithCanguro(canguro1)
          .AndAnotherCanguro(canguro2);
-bool existsPoint = evaluator.ExistsCoincidentPoint(canguro1, canguro2);
+
+bool existsPoint = evaluator.ExistsCoincidentPoint(canguro1.CurrentPoint,canguro1.MetersPerJump, canguro2.CurrentPoint, canguro2.MetersPerJump);
 
 /*Imprime el resultado final*/
 if (existsPoint)

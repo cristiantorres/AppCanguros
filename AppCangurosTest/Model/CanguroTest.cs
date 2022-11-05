@@ -20,7 +20,7 @@ namespace AppCangurosTest.Model
             #endregion
 
             #region Act
-            canguro.Jump();
+            canguro.Jump(5);
             #endregion
 
             #region Asserts
