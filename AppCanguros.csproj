@@ -8,8 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="AppCangurosTest\**" />
     <Compile Remove="Tests\**" />
+    <EmbeddedResource Remove="AppCangurosTest\**" />
     <EmbeddedResource Remove="Tests\**" />
+    <None Remove="AppCangurosTest\**" />
     <None Remove="Tests\**" />
   </ItemGroup>
 
