@@ -9,20 +9,33 @@ using AppCanguros.Model.interfaces;
 using Microsoft.Extensions.Logging;
 using AppCanguros;
 using Canguros.Model._Constants;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 
 static IHostBuilder CreateHostBuilder(string[] args)
 {
     return Host.CreateDefaultBuilder(args)
         .ConfigureServices(
-            (_, services) => 
+            (_, services) =>
                         services.AddSingleton<ILine<int>>(
-                                                line => { return new LineaNumerica(Constants.INITIAL_NUMBER_NUMERIC_LINE, Constants.FINAL_NUMBER_NUMERIC_LINE);
-                                            })                                        
+                                                            line => new LineaNumerica(Constants.INITIAL_NUMBER_NUMERIC_LINE, Constants.FINAL_NUMBER_NUMERIC_LINE) )
                                 .AddSingleton<Evaluator>()
                                 .AddScoped<IJumper, Canguro>()
-                                .AddSingleton<Application, Application>());
+                                .AddSingleton<Application>()
+                                );
+
 }
-var host = CreateHostBuilder(args).Build();
+
+var host = CreateHostBuilder(args)
+           .UseSerilog((ctx, lc) => lc.WriteTo.Console()
+                                      .WriteTo.RollingFile("log-{Date}.txt",
+                                        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}")
+      )
+
+           .Build();
+ 
+
+ 
 Application app = host.Services.GetRequiredService<Application>();
 Console.WriteLine("Evaluando si existe punto de coincidencia...!");
 
