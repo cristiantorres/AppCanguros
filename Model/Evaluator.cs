@@ -74,23 +74,15 @@ namespace Canguros.Model
 
         public string ExistsCoincidentPoint_NonRecursiveAlternative(int posicionCanguro1, int jumpPowerCanguro1, int posicionCanguro2, int jumpPowerCanguro2)
         {
-            //if (v1 > v2)
-            //{
-
-            //    int remainder = (x1 - x2) % (v2 - v1);
-
-            //    if (remainder == 0)
-            //    {
-            //        return "YES";
-            //    }
-            //}
-            //return "NO";
-            /*Calcula los saltos para coincidir*/
+            
             var jumps = (posicionCanguro2 - posicionCanguro1) / (jumpPowerCanguro1 - jumpPowerCanguro2);
 
-            /*Valida si */
-            if (jumpPowerCanguro1 < jumpPowerCanguro2 ||  (jumps * jumpPowerCanguro1 + posicionCanguro1) > Constants.FINAL_NUMBER_NUMERIC_LINE
-                 || (jumps * jumpPowerCanguro2 + posicionCanguro2) > Constants.FINAL_NUMBER_NUMERIC_LINE)
+            /*calcula si la diferencia de posiciones entre uno y otro es divisible por la diferencia que acorta el canguro 1 en cada salto*/
+            var residuo = (posicionCanguro2 - posicionCanguro1) % (jumpPowerCanguro1 - jumpPowerCanguro2);
+
+            /*Valida si el salto del canguro1 es mayor y si no se sobrepasa del rango de la linea en caso de encontrarse en un punto*/
+            if (jumpPowerCanguro1 < jumpPowerCanguro2 ||  residuo > 0 || (jumps * jumpPowerCanguro1 + posicionCanguro1) > Constants.FINAL_NUMBER_NUMERIC_LINE
+                                      || (jumps * jumpPowerCanguro2 + posicionCanguro2) > Constants.FINAL_NUMBER_NUMERIC_LINE)
                 return "NO";
             else
                 return "SI";
