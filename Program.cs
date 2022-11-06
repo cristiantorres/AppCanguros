@@ -46,17 +46,15 @@ var canguro1 = new CanguroFactory()
                         .Create(3, 3);
 /*Instanciamos el segundo canguro*/
 var canguro2 = new CanguroFactory()
-                        .Create(5, 2);
+                        .Create(3177, 2);
 evaluator.WithCanguro(canguro1)
          .AndAnotherCanguro(canguro2);
 
-bool existsPoint = evaluator.ExistsCoincidentPoint(canguro1.CurrentPoint,canguro1.MetersPerJump, canguro2.CurrentPoint, canguro2.MetersPerJump);
+var response = evaluator.ExistsCoincidentPoint_NonRecursiveAlternative(canguro1.CurrentPoint,canguro1.MetersPerJump, canguro2.CurrentPoint, canguro2.MetersPerJump);
 
 /*Imprime el resultado final*/
-if (existsPoint)
-    Console.WriteLine("SI");
-else
-    Console.WriteLine("NO");
+ Console.WriteLine($"{response}");
+ 
 
 
 

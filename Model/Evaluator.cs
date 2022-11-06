@@ -1,6 +1,7 @@
 ﻿
 
 using AppCanguros.Model.interfaces;
+using Canguros.Model._Constants;
 using Microsoft.Extensions.Logging;
 
 namespace Canguros.Model
@@ -51,23 +52,49 @@ namespace Canguros.Model
             return this;
         }
 
-        public bool ExistsCoincidentPoint( int posicionCanguro1, int jumpPowerCanguro1, int posicionCanguro2, int jumpPowerCanguro2)
+        public string ExistsCoincidentPoint_RecursiveAlternative( int posicionCanguro1, int jumpPowerCanguro1, int posicionCanguro2, int jumpPowerCanguro2)
         {
             if (posicionCanguro1 == posicionCanguro2)
             {
                 _logger.LogInformation($"Se encontró un punto coincidente entre los 2 canguros: Punto[{FirstCanguro.CurrentPoint}]");
                 Console.WriteLine($"Punto coincidente: {FirstCanguro.CurrentPoint}");
-                return true;
+                return "SI";
             }
             else
                 if ( FirstCanguro.CurrentPoint >= Linea.EndPoint || SecondCanguro.CurrentPoint >= Linea.EndPoint)
-                    return false;
+                    return "NO";
                 else
                     {
                         FirstCanguro.Jump(jumpPowerCanguro1);
                         SecondCanguro.Jump(jumpPowerCanguro2);
-                        return ExistsCoincidentPoint(FirstCanguro.CurrentPoint, FirstCanguro.MetersPerJump,SecondCanguro.CurrentPoint, SecondCanguro.MetersPerJump);
+                        return ExistsCoincidentPoint_RecursiveAlternative(FirstCanguro.CurrentPoint, FirstCanguro.MetersPerJump,SecondCanguro.CurrentPoint, SecondCanguro.MetersPerJump);
                     }
         }
+
+
+        public string ExistsCoincidentPoint_NonRecursiveAlternative(int posicionCanguro1, int jumpPowerCanguro1, int posicionCanguro2, int jumpPowerCanguro2)
+        {
+            //if (v1 > v2)
+            //{
+
+            //    int remainder = (x1 - x2) % (v2 - v1);
+
+            //    if (remainder == 0)
+            //    {
+            //        return "YES";
+            //    }
+            //}
+            //return "NO";
+            /*Calcula los saltos para coincidir*/
+            var jumps = (posicionCanguro2 - posicionCanguro1) / (jumpPowerCanguro1 - jumpPowerCanguro2);
+
+            /*Valida si */
+            if (jumpPowerCanguro1 < jumpPowerCanguro2 ||  (jumps * jumpPowerCanguro1 + posicionCanguro1) > Constants.FINAL_NUMBER_NUMERIC_LINE
+                 || (jumps * jumpPowerCanguro2 + posicionCanguro2) > Constants.FINAL_NUMBER_NUMERIC_LINE)
+                return "NO";
+            else
+                return "SI";
+        }
+
     }
 }
