@@ -27,8 +27,6 @@ namespace Canguros.Model
             _meters = meters;  
         }
 
-
-        public void Jump() => _point += _meters;
-
+        public void Jump(int meters) => _point += _meters;
     }
 }
